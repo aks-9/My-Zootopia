@@ -15,31 +15,35 @@ animals_data = load_data('animals_data.json')
 with open('animals_template.html', 'r') as template_file:
     html_template = template_file.read()
 
-# Step 2: Generate the animals info string as HTML <li> items
+# Step 2: Generate the animals info string as HTML <li> cards
 animals_info = ""
 for animal in animals_data:
     animals_info += '<li class="cards__item">\n'
 
-    # Name
+    # Card title
     if 'name' in animal:
-        animals_info += f"Name: {animal['name']}<br/>\n"
+        animals_info += f'  <div class="card__title">{animal["name"]}</div>\n'
+
+    # Card text
+    animals_info += '  <p class="card__text">\n'
 
     # Diet
     diet = animal.get('characteristics', {}).get('diet')
     if diet:
-        animals_info += f"Diet: {diet}<br/>\n"
+        animals_info += f'      <strong>Diet:</strong> {diet}<br/>\n'
 
     # First location
     locations = animal.get('locations', [])
     if locations:
-        animals_info += f"Location: {locations[0]}<br/>\n"
+        animals_info += f'      <strong>Location:</strong> {locations[0]}<br/>\n'
 
     # Type
     animal_type = animal.get('characteristics', {}).get('type')
     if animal_type:
-        animals_info += f"Type: {animal_type}<br/>\n"
+        animals_info += f'      <strong>Type:</strong> {animal_type}<br/>\n'
 
-    animals_info += '</li>\n'  # Close the <li> for this animal
+    animals_info += '  </p>\n'  # Close card text
+    animals_info += '</li>\n'  # Close card item
 
 # Step 3: Replace placeholder in template
 final_html = html_template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
